@@ -1,2 +1,2 @@
 # StoyanovMVC
-Simple MVC
+Simple MVC framework
