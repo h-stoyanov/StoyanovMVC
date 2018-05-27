@@ -4,17 +4,21 @@
 namespace Core;
 
 
+/**
+ * Class View
+ * @package Core
+ */
 class View
 {
 
     public static function render($view, $args = [])
     {
         extract($args, EXTR_SKIP);
-        $file = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'App' . DIRECTORY_SEPARATOR . 'Views' . DIRECTORY_SEPARATOR . $view;
+        $file = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'Views' . DIRECTORY_SEPARATOR . $view;
         if (is_readable($file)) {
             require $file;
         } else {
-            echo "$file not found";
+            throw new \Exception("$file not found");
         }
     }
 
@@ -23,7 +27,7 @@ class View
         static $twig = null;
 
         if ($twig == null) {
-            $loader = new \Twig_Loader_Filesystem(dirname(__DIR__) . DIRECTORY_SEPARATOR . 'App' . DIRECTORY_SEPARATOR . 'Views');
+            $loader = new \Twig_Loader_Filesystem(dirname(__DIR__) . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'Views');
             $twig = new \Twig_Environment($loader, array(
                 'cache' => dirname(__DIR__) . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . 'twig',
             ));

@@ -2,13 +2,26 @@
 namespace Core;
 
 
-
+/**
+ * Class Router
+ * @package Core
+ */
 class Router
 {
+    /**
+     * @var array
+     */
     protected $routes = [];
 
+    /**
+     * @var array
+     */
     protected $params = [];
 
+    /**
+     * @param $route
+     * @param array $params
+     */
     public function add($route, $params = [])
     {
         // Convert the route to regular expression by escaping the forward slashes
@@ -58,7 +71,6 @@ class Router
         if ($this->match($url)){
             $controller = $this->params['controller'];
             $controller = $this->convertToStudlyCaps($controller);
-//            $controller = "App\Controllers\\$controller";
             $controller = $this->getNamespace() . $controller;
             if (class_exists($controller)){
                 $controller_object = new $controller($this->params);
@@ -68,13 +80,13 @@ class Router
                 if (preg_match('/action$/i', $action) == 0){
                     $controller_object->$action();
                 } else{
-                    echo "Method $action (in controller $controller) not found";
+                    throw new \Exception("Method $action (in controller $controller) not found", 404);
                 }
             } else{
-                echo "Controller class $controller not found";
+                throw new \Exception("Controller class $controller not found", 404);
             }
         } else{
-            echo "No route matched.";
+            throw new \Exception("No route matched.", 404);
         }
     }
 

@@ -2,15 +2,18 @@
 
 namespace App\Controllers;
 use Core\Controller;
+use App\Models\Post;
+use Core\View;
 
 
 class Posts extends Controller
 {
     public function indexAction()
     {
-        echo 'Hello from the index action in the Posts controller';
-        echo '<p>Query string parameters: <pre>' .
-            htmlspecialchars(print_r($_GET, true)) . '</pre></p>';
+        $posts = Post::getAll();
+        View::renderTemplate('Posts/index.html.twig', [
+           'posts' => $posts
+        ]);
     }
 
     public function addNewAction()
